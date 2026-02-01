@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+venv/
+.env
+.DS_Store
+instance/
+.pytest_cache/
+merged.pdf
+rotated_*.pdf
+split_*.pdf
+dummy*.pdf
+*.log
