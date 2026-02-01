@@ -1,0 +1,219 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Merge PDFs with <span
+            style="background: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Style</span>
+    </h1>
+    <p>The simplest, most beautiful way to combine your PDF documents. <br>Secure, fast, and completely free.</p>
+
+    <div class="glass-card">
+        <h3>Start Merging</h3>
+        <p style="margin-bottom: 2rem; font-size: 1rem; color: var(--text-secondary);">Drag and drop your PDF files here
+            to get started.</p>
+
+        <div class="dropzone-placeholder" id="dropzone">
+            <input type="file" name="pdfs" id="file-input" multiple accept=".pdf" style="display: none;">
+            <div id="dropzone-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-bottom: 1rem;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p><strong>Choose files</strong> or drag them here</p>
+            </div>
+            <div id="file-list" style="display: none; text-align: left; max-height: 400px; overflow-y: auto;"></div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('file-input').click()">Select
+                PDF Files</button>
+            <button type="button" class="btn btn-primary" id="merge-btn"
+                style="display: none; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-left: 1rem;">Merge
+                PDF</button>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2 style="margin-bottom: 1rem;">Ready to organize your documents?</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">
+            Join thousands of users who trust PDF Fusion for their document needs. <br>
+            Fast, secure, and always free.
+        </p>
+        <button class="btn btn-primary"
+            onclick="window.scrollTo({top: 0, behavior: 'smooth'}); document.getElementById('file-input').click()">Merge
+            PDFs Now</button>
+    </div>
+</section>
+
+<script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('file-input');
+    const fileList = document.getElementById('file-list');
+    const dropzoneContent = document.getElementById('dropzone-content');
+    const mergeBtn = document.getElementById('merge-btn');
+    let selectedFiles = [];
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    // Highlight dropzone
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        dropzone.style.borderColor = '#667eea';
+        dropzone.style.backgroundColor = 'rgba(235, 244, 255, 0.5)';
+    }
+
+    function unhighlight(e) {
+        dropzone.style.borderColor = '#cbd5e0';
+        dropzone.style.backgroundColor = 'rgba(247, 250, 252, 0.5)';
+    }
+
+    // Handle dropped files
+    dropzone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }
+
+    fileInput.addEventListener('change', function () {
+        handleFiles(this.files);
+    });
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type === 'application/pdf') {
+                    selectedFiles.push(files[i]);
+                } else {
+                    alert(`Skipping ${files[i].name} - not a PDF`);
+                }
+            }
+            updateFileList();
+        }
+    }
+
+    function updateFileList() {
+        if (selectedFiles.length === 0) {
+            dropzoneContent.style.display = 'block';
+            fileList.style.display = 'none';
+            mergeBtn.style.display = 'none';
+            return;
+        }
+
+        dropzoneContent.style.display = 'none';
+        fileList.style.display = 'block';
+        fileList.innerHTML = '';
+
+        const list = document.createElement('ul');
+        list.style.listStyle = 'none';
+
+        selectedFiles.forEach((file, index) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '1rem';
+            li.innerHTML = `
+                <div style="padding: 1rem; background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid var(--glass-border); display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.5rem; margin-right: 0.75rem;">📄</span>
+                        <span style="flex: 1; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${file.name}</span>
+                        <button type="button" onclick="removeFile(${index})" style="background: none; border: none; cursor: pointer; color: #e53e3e; font-weight: bold;">✕</button>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <label style="font-size: 0.875rem; color: var(--text-secondary); margin-right: 0.5rem; white-space: nowrap;">Page Range:</label>
+                        <input type="text" 
+                                class="page-range-input" 
+                                placeholder="e.g., all, 1-3, 5" 
+                                value="all"
+                                style="width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #e2e8f0; font-family: inherit;">
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                        Examples: "all", "1,3,5", "1-5", "2-end"
+                    </div>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+        fileList.appendChild(list);
+
+        if (selectedFiles.length >= 2) {
+            mergeBtn.style.display = 'inline-block';
+        } else {
+            mergeBtn.style.display = 'none';
+        }
+    }
+
+    window.removeFile = function (index) {
+        selectedFiles.splice(index, 1);
+        updateFileList();
+    }
+
+    mergeBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        if (selectedFiles.length < 2) {
+            alert("Please select at least 2 PDF files to merge.");
+            return;
+        }
+
+        const formData = new FormData();
+        const rangeInputs = document.querySelectorAll('.page-range-input');
+
+        selectedFiles.forEach((file, i) => {
+            formData.append('pdfs', file);
+            let rangeVal = rangeInputs[i] ? rangeInputs[i].value : 'all';
+            formData.append('ranges', rangeVal);
+        });
+
+        const originalBtnText = mergeBtn.innerText;
+        mergeBtn.innerText = 'Merging...';
+        mergeBtn.disabled = true;
+
+        fetch('/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                return response.text().then(text => { throw new Error(text) });
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'merged.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                alert('Error merging PDFs: ' + error.message);
+            })
+            .finally(() => {
+                mergeBtn.innerText = originalBtnText;
+                mergeBtn.disabled = false;
+            });
+    });
+</script>
+{% endblock %}

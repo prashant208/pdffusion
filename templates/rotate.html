@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Rotate <span
+            style="background: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PDF</span>
+    </h1>
+    <p>Permanently rotate your PDF pages.</p>
+
+    <form action="/rotate" method="POST" enctype="multipart/form-data">
+        <div class="glass-card">
+            <h3>Select PDF to Rotate</h3>
+
+            <div class="dropzone-placeholder" id="dropzone" style="margin-bottom: 2rem;">
+                <input type="file" name="pdf" id="file-input" accept=".pdf" style="display: none;" required>
+                <div id="dropzone-content">
+                    <p><strong>Choose a file</strong> or drag it here</p>
+                </div>
+                <div id="file-name" style="display: none; font-weight: bold; padding: 1rem;"></div>
+            </div>
+
+            <div
+                style="margin-bottom: 2rem; text-align: left; background: rgba(255,255,255,0.5); padding: 1.5rem; border-radius: 12px;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Rotation Angle:</label>
+                <div style="display: flex; gap: 1.5rem;">
+                    <label style="cursor: pointer; display: flex; align-items: center;">
+                        <input type="radio" name="angle" value="90" checked style="margin-right: 0.5rem;"> 90° CW
+                    </label>
+                    <label style="cursor: pointer; display: flex; align-items: center;">
+                        <input type="radio" name="angle" value="180" style="margin-right: 0.5rem;"> 180°
+                    </label>
+                    <label style="cursor: pointer; display: flex; align-items: center;">
+                        <input type="radio" name="angle" value="270" style="margin-right: 0.5rem;"> 90° CCW (270°)
+                    </label>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('file-input').click()"
+                id="select-btn">Select PDF</button>
+            <button type="submit" class="btn btn-primary" id="action-btn"
+                style="display: none; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-left: 1rem;">Rotate
+                PDF</button>
+        </div>
+    </form>
+</section>
+
+<script>
+    const fileInput = document.getElementById('file-input');
+    const fileNameDiv = document.getElementById('file-name');
+    const dropzoneContent = document.getElementById('dropzone-content');
+    const actionBtn = document.getElementById('action-btn');
+    const selectBtn = document.getElementById('select-btn');
+
+    fileInput.addEventListener('change', function () {
+        if (this.files.length > 0) {
+            dropzoneContent.style.display = 'none';
+            fileNameDiv.style.display = 'block';
+            fileNameDiv.innerText = "📄 " + this.files[0].name;
+            actionBtn.style.display = 'inline-block';
+            selectBtn.innerText = "Change File";
+        }
+    });
+</script>
+{% endblock %}

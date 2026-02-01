@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Fusion | Merge PDFs Simply</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">PDF Fusion</a>
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <div class="dropdown">
+                <a href="#" style="cursor: default;">Tools ▾</a>
+                <div class="dropdown-content">
+                    <a href="/">Merge PDF</a>
+                    <a href="/split">Split PDF</a>
+                    <a href="/rotate">Rotate PDF</a>
+                </div>
+            </div>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div style="font-weight: 600;">&copy; 2026 PDF Fusion. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Placeholder for future JS
+    </script>
+</body>
+
+</html>

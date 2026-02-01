@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Split <span
+            style="background: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PDF</span>
+    </h1>
+    <p>Extract specific pages from your PDF document.</p>
+
+    <form action="/split" method="POST" enctype="multipart/form-data">
+        <div class="glass-card">
+            <h3>Select PDF to Split</h3>
+
+            <div class="dropzone-placeholder" id="dropzone" style="margin-bottom: 2rem;">
+                <input type="file" name="pdf" id="file-input" accept=".pdf" style="display: none;" required>
+                <div id="dropzone-content">
+                    <p><strong>Choose a file</strong> or drag it here</p>
+                </div>
+                <div id="file-name" style="display: none; font-weight: bold; padding: 1rem;"></div>
+            </div>
+
+            <div
+                style="margin-bottom: 2rem; text-align: left; background: rgba(255,255,255,0.5); padding: 1.5rem; border-radius: 12px;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page Range to Extract:</label>
+                <input type="text" name="range" placeholder="e.g., 1-5, 8" required
+                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #e2e8f0; font-family: inherit; font-size: 1rem;">
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Enter the page numbers you want to keep in the new file.
+                </p>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('file-input').click()"
+                id="select-btn">Select PDF</button>
+            <button type="submit" class="btn btn-primary" id="action-btn"
+                style="display: none; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-left: 1rem;">Split
+                PDF</button>
+        </div>
+    </form>
+</section>
+
+<script>
+    const fileInput = document.getElementById('file-input');
+    const fileNameDiv = document.getElementById('file-name');
+    const dropzoneContent = document.getElementById('dropzone-content');
+    const actionBtn = document.getElementById('action-btn');
+    const selectBtn = document.getElementById('select-btn');
+
+    fileInput.addEventListener('change', function () {
+        if (this.files.length > 0) {
+            dropzoneContent.style.display = 'none';
+            fileNameDiv.style.display = 'block';
+            fileNameDiv.innerText = "📄 " + this.files[0].name;
+            actionBtn.style.display = 'inline-block';
+            selectBtn.innerText = "Change File";
+        }
+    });
+</script>
+{% endblock %}

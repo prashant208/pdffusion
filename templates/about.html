@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="hero" style="padding-top: 2rem;">
+    <h1>About <span
+            style="background: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PDF
+            Fusion</span></h1>
+    <p>We are dedicated to making document management simple, beautiful, and accessible for everyone.</p>
+
+    <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 4rem;">
+
+        <div class="glass-card" style="padding: 2rem; text-align: left;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+            <h3>Fast & efficient</h3>
+            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Merge dozens of documents in seconds. Our
+                optimized backend ensures you never have to wait.</p>
+        </div>
+
+        <div class="glass-card" style="padding: 2rem; text-align: left;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔒</div>
+            <h3>Secure by Design</h3>
+            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Your files are processed securely and deleted
+                immediately after processing. We respect your privacy.</p>
+        </div>
+
+        <div class="glass-card" style="padding: 2rem; text-align: left;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">✨</div>
+            <h3>Beautifully Simple</h3>
+            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Who said tools have to be ugly? Enjoy a premium
+                user interface that makes work a pleasure.</p>
+        </div>
+
+    </div>
+
+    <div
+        style="margin-top: 5rem; padding: 3rem; background: var(--glass-bg); border-radius: 24px; border: 1px solid var(--glass-border);">
+        <h2>Our Mission</h2>
+        <p style="max-width: 700px; margin: 1.5rem auto; color: var(--text-secondary);">
+            PDF Fusion was born from the frustration of clunky, ad-filled online tools. We believe that essential
+            digital utilities should be clean, fast, and delightful to use.
+        </p>
+        <a href="/" class="btn btn-primary">Start Merging Today</a>
+    </div>
+</section>
+{% endblock %}
